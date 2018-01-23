@@ -65,7 +65,13 @@ public class UserServlet extends HttpServlet {
 				System.out.println("Login failed.");
 			}
 			else {
-				System.out.println("Login Success.");				
+				System.out.println(userVo.getEmail() + " Login Success.");
+				
+				HttpSession session = request.getSession(true);
+				session.setAttribute("authUser", userVo);
+				
+				url = "/mysite/main";
+				WebUtil.redirect(request, response, url);
 			}
 			
 		}

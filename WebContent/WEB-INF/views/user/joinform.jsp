@@ -22,14 +22,14 @@
 				<!-- 
 				<li><a href="">회원정보수정</a></li>
 				<li><a href="">로그아웃</a></li> 
-				<li> 황일영님 안녕하세요^^;</li>
+				<li> --님 안녕하세요^^;</li>
 				-->
 			</ul>
 		</div> <!-- /header -->
 				
 		<div id="navigation">
 			<ul>
-				<li><a href="">황일영</a></li>
+				<li><a href="">--</a></li>
 				<li><a href="">방명록</a></li>
 				<li><a href="">게시판</a></li>
 			</ul>
@@ -39,7 +39,7 @@
 			<div id="content">
 				<div id="user">
 	
-					<form id="join-form" name="joinForm" method="" action="">
+					<form id="join-form" name="joinForm" method="get" action="user">
 						
 						<label class="block-label" for="name">이름</label>
 						<input id="name" name="name" type="text" value="">
@@ -62,7 +62,7 @@
 							<input id="agree-prov" type="checkbox" name="agreeProv" value="y">
 							<label>서비스 약관에 동의합니다.</label>
 						</fieldset>
-						
+						<input type="hidden" name="a" value="join">
 						<input type="submit" value="가입하기">
 						
 					</form>

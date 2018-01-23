@@ -14,8 +14,8 @@
 			<h1>MySite</h1>
 			<ul>
 				<!-- 로그인 전 -->
-				<li><a href="">로그인</a></li>
-				<li><a href="">회원가입</a></li>
+				<li><a href="user?a=login">로그인</a></li>
+				<li><a href="user?a=joinform">회원가입</a></li>
 				
 				<!-- 로그인 후 -->
 				<!-- 
@@ -37,7 +37,7 @@
 		<div id="wrapper">
 			<div id="content">
 				<div id="site-introduction">
-					<img style="width: 150px" id="profile" src="/mysite/assets/images/profile.png">
+					<img style="width: 150px" id="profile" src="/mysite/assets/images/profile.jpg">
 					<h2>안녕하세요.<br> --의 mysite에 방문하신 것을<br/> 환영합니다.</h2>
 					<p>
 						--

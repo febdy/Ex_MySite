@@ -74,6 +74,14 @@ public class UserServlet extends HttpServlet {
 				WebUtil.redirect(request, response, url);
 			}
 			
+		} else if("logout".equals(actionName)) {
+			HttpSession session = request.getSession();
+			session.removeAttribute("authUser");
+			session.invalidate(); // 초기화
+			
+			url = "/mysite/main";
+			WebUtil.redirect(request, response, url);
+			
 		}
 		
 	}

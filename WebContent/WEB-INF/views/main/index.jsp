@@ -4,7 +4,6 @@
 	UserVo authUser = (UserVo)session.getAttribute("authUser");
 %>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,9 +26,8 @@
 				<% } else { %>
 					<!-- 로그인 후 -->					 
 					<li><a href="">회원정보수정</a></li>
-					<li><a href="">로그아웃</a></li> 
+					<li><a href="user?a=logout">로그아웃</a></li> 
 					<li> <%=authUser.getName() %>님 안녕하세요^^;</li>
-					
 				<% } %>
 			</ul>
 		</div> <!-- /header -->

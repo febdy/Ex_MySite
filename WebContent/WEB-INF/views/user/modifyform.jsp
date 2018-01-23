@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ page import="com.javaex.vo.UserVo" %>
+<%
+	UserVo authUser = (UserVo)session.getAttribute("authUser");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,7 +32,7 @@
 				
 		<div id="navigation">
 			<ul>
-				<li><a href="">황일영</a></li>
+				<li><a href="">--</a></li>
 				<li><a href="">방명록</a></li>
 				<li><a href="">게시판</a></li>
 			</ul>
@@ -39,14 +42,14 @@
 			<div id="content">
 				<div id="user">
 	
-					<form id="join-form" name="joinForm" method="" action="">
+					<form id="join-form" name="joinForm" method="get" action="user">
 
 						
 						<label class="block-label" for="name">이름</label>
-						<input id="name" name="name" type="text" value="" />
+						<input id="name" name="name" type="text" value="<%=authUser.getName() %>" />
 	
 						<label class="block-label" for="email">이메일</label>
-						<strong></strong>
+						<strong><%=authUser.getEmail() %></strong>
 						
 						<label class="block-label">패스워드</label>
 						<input name="password" type="password" value="" />
@@ -54,11 +57,17 @@
 						<fieldset>
 							<legend>성별</legend>
 							
-							<label>여</label> <input type="radio" name="gender" value="female" >
-							<label>남</label> <input type="radio" name="gender" value="male" checked="checked">
-							
+							<label>여</label> <input type="radio" name="gender" 
+							<% if ((authUser.getGender()).equals("female")){ %> 
+								value="female" checked="checked">
+								<label>남</label> <input type="radio" name="gender" value="male">
+							<% } else {%>
+								>
+								<label>남</label> <input type="radio" name="gender" value="male" checked="checked">
+							<% } %>
 						</fieldset>
-						
+						<input type="hidden" name="no" value="<%=authUser.getNo()%>">
+						<input type="hidden" name="a" value="modify">
 						<input type="submit" value="수정완료">
 						
 					</form>

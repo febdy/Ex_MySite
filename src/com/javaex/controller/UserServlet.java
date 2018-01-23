@@ -82,6 +82,31 @@ public class UserServlet extends HttpServlet {
 			url = "/mysite/main";
 			WebUtil.redirect(request, response, url);
 			
+		} else if("modifyform".equals(actionName)) {
+			HttpSession session = request.getSession();
+			UserVo authUser = (UserVo)session.getAttribute("authUser");
+						
+			request.setAttribute("userInfo", authUser);
+			url = userDefaultUrl + "/modifyform.jsp";
+			WebUtil.forward(request, response, url);
+		
+		} else if("modify".equals(actionName)) {
+			int no = Integer.valueOf(request.getParameter("no"));
+			String name = request.getParameter("name");
+			String password = request.getParameter("password");
+			String gender = request.getParameter("gender");
+			
+			UserDao userDao = new UserDao();
+			UserVo userVo = userDao.getUser(no);
+			
+			userVo.setName(name);
+			if(password != "")
+				userVo.setPassword(password);
+			userVo.setGender(gender);
+			userDao.update(userVo);
+			
+			url = "main";
+			WebUtil.redirect(request, response, url);
 		}
 		
 	}

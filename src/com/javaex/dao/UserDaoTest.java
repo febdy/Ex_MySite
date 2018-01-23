@@ -10,10 +10,12 @@ public class UserDaoTest {
 		UserVo vo = new UserVo(1, "test", "test", "test", "test");
 	//	dao.insert(vo);
 	
-		List<UserVo> uList = dao.getList();
+	/*	List<UserVo> uList = dao.getList();
 		
 		for(UserVo uVo : uList) {
 			System.out.println(uVo.toString());
 		}
+	*/
+		
 	}
 }

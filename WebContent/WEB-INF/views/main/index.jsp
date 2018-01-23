@@ -14,7 +14,7 @@
 			<h1>MySite</h1>
 			<ul>
 				<!-- 로그인 전 -->
-				<li><a href="user?a=login">로그인</a></li>
+				<li><a href="user?a=loginform">로그인</a></li>
 				<li><a href="user?a=joinform">회원가입</a></li>
 				
 				<!-- 로그인 후 -->

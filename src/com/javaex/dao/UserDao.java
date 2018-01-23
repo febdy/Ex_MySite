@@ -56,9 +56,8 @@ public class UserDao {
 		}
 	}
 	
-	public List<UserVo> getList() {
-		List<UserVo> uList = new ArrayList<>();
-		UserVo vo;
+	public UserVo getUser(String email, String password) {
+		UserVo vo = null;
 
 		try {
 			// 1. JDBC 드라이버 (Oracle) 로딩
@@ -69,23 +68,23 @@ public class UserDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = "SELECT no, name, email, password, gender " 
-						 + " FROM users" 
+			String query = "SELECT no, name, email, gender " 
+						 + " FROM users " 
+						 + " WHERE email = ? AND password = ? "
 						 + " ORDER BY no";
 			pstmt = conn.prepareStatement(query);
-			pstmt.executeQuery();
-			rs = pstmt.getResultSet();
+			pstmt.setString(1, email);
+			pstmt.setString(2, password);
+			rs = pstmt.executeQuery();
 
-			while (rs.next()) {
+			if(rs.next()) {
 				vo = new UserVo();
 				vo.setNo(rs.getInt("no"));
 				vo.setName(rs.getString("name"));
 				vo.setEmail(rs.getString("email"));
-				vo.setPassword(rs.getString("password"));
 				vo.setGender(rs.getString("gender"));
-				uList.add(vo);
 			}
-
+			
 		} catch (ClassNotFoundException e) {
 			System.out.println("error: 드라이버 로딩 실패 - " + e);
 		} catch (SQLException e) {
@@ -107,7 +106,7 @@ public class UserDao {
 			}
 		}
 
-		return uList;
+		return vo;
 	}
 	
 }

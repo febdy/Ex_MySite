@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.javaex.dao.UserDao;
 import com.javaex.util.WebUtil;
@@ -43,15 +44,30 @@ public class UserServlet extends HttpServlet {
 			userDao.insert(userVo);
 			
 			url = "user?a=joinsuccess";
-			WebUtil.redirect(request, response, url);
+			WebUtil.forward(request, response, url);
 			
 		} else if("joinsuccess".equals(actionName)) {
 			url = userDefaultUrl + "/joinsuccess.jsp";
 			WebUtil.forward(request, response, url);
 			
-		} else if("login".equals(actionName)) {
+		} else if("loginform".equals(actionName)) {
 			url = userDefaultUrl + "/loginform.jsp";
 			WebUtil.forward(request, response, url);
+		
+		} else if("login".equals(actionName)) {
+			String email = request.getParameter("email");
+			String password = request.getParameter("password");
+			
+			UserDao dao = new UserDao();
+			UserVo userVo = dao.getUser(email, password);
+			
+			if(userVo == null) {
+				System.out.println("Login failed.");
+			}
+			else {
+				System.out.println("Login Success.");				
+			}
+			
 		}
 		
 	}

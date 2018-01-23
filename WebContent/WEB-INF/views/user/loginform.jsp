@@ -29,7 +29,7 @@
 		
 		<div id="navigation">
 			<ul>
-				<li><a href="">황일영</a></li>
+				<li><a href="">--</a></li>
 				<li><a href="">방명록</a></li>
 				<li><a href="">게시판</a></li>
 			</ul>
@@ -39,7 +39,7 @@
 			<div id="content">
 				<div id="user">
 					
-					<form id="login-form" name="loginform" method="" action="">
+					<form id="login-form" name="loginform" method="get" action="">
 						<input type="hidden" name="a" value="login" /> 
 						
 						<label class="block-label" for="email">이메일</label> 

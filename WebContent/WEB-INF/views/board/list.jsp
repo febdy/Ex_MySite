@@ -1,4 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.javaex.vo.BoardVo" %>
+<%
+	List<BoardVo> bList = (List)request.getAttribute("bList");
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -28,31 +33,17 @@
 						<th>조회수</th>
 						<th>작성일</th>
 						<th>&nbsp;</th>
-					</tr>				
-					<tr>
-						<td>3</td>
-						<td><a href="board?a=view&no=3">세 번째 글입니다.</a></td>
-						<td>황일영</td>
-						<td>3</td>
-						<td>2015-10-11 12:04:20</td>
-						<td><a href="" class="del">삭제</a></td>
 					</tr>
-					<tr>
-						<td>2</td>
-						<td><a href="">두 번째 글입니다.</a></td>
-						<td>정우성</td>
-						<td>3</td>
-						<td>2015-10-02 12:04:12</td>
-						<td><a href="" class="del">삭제</a></td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td><a href="">첫 번째 글입니다.</a></td>
-						<td>이효리</td>
-						<td>3</td>
-						<td>2015-09-25 07:24:32</td>
-						<td><a href="" class="del">삭제</a></td>
-					</tr>
+					<% for(BoardVo bVo : bList) {%>				
+						<tr>
+							<td><%=bVo.getArticleNo() %></td>
+							<td><a href="board?a=view&no=<%=bVo.getArticleNo() %>"><%=bVo.getTitle() %></a></td>
+							<td><%=bVo.getWriter() %></td>
+							<td><%=bVo.getViewCount() %></td>
+							<td><%=bVo.getDate() %></td>
+							<td><a href="" class="del">삭제</a></td>
+						</tr>
+					<% } %>
 				</table>
 				<div class="pager">
 					<ul>

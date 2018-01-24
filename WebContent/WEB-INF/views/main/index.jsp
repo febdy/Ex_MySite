@@ -23,7 +23,7 @@
 						--
 						<br>
 						<br>
-						<a href="">방명록</a>에 글 남기기
+						<a href="guestbook?a=list">방명록</a>에 글 남기기
 						<br>
 					</p>
 				</div>

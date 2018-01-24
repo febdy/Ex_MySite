@@ -6,6 +6,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class WebUtil {
 	
@@ -26,4 +27,8 @@ public class WebUtil {
 		
 	}
 	
+	public static void removeAttribute(HttpServletRequest request, String attribute) {
+		HttpSession session = request.getSession();
+		session.removeAttribute(attribute);
+	}
 }

@@ -3,12 +3,12 @@ package com.javaex.controller;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.javaex.dao.GuestBookDao;
 import com.javaex.util.WebUtil;
@@ -25,12 +25,16 @@ public class GuestbookServlet extends HttpServlet {
 		String url;
 		String actionName = request.getParameter("a");
 
-		if ("list".equals(actionName)) {			
+		if ("list".equals(actionName)) {
 			dao = new GuestBookDao();
 			List<GuestVo> gList = dao.getList();
-			
 			request.setAttribute("gList", gList);
+			
 			url = "/WEB-INF/views/guestbook/list.jsp";
+
+			HttpSession session = request.getSession();
+			session.setAttribute("beforePage", "guestbook?a=list");
+
 			WebUtil.forward(request, response, url);
 			
 		} else if ("add".equals(actionName)) {			

@@ -20,10 +20,13 @@ public class UserServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		String url, actionName;
+		HttpSession session;
 		
 		actionName = request.getParameter("a");
 		
 		if("joinform".equals(actionName)) {
+			WebUtil.removeAttribute(request, "beforePage");
+			
 			url = "/WEB-INF/views/user/joinform.jsp";
 			WebUtil.forward(request, response, url);
 			
@@ -46,6 +49,8 @@ public class UserServlet extends HttpServlet {
 			WebUtil.forward(request, response, url);
 			
 		} else if("joinsuccess".equals(actionName)) {
+			WebUtil.removeAttribute(request, "beforePage");
+			
 			url = "/WEB-INF/views/user/joinsuccess.jsp";
 			WebUtil.forward(request, response, url);
 			
@@ -67,23 +72,37 @@ public class UserServlet extends HttpServlet {
 			else {
 				System.out.println(userVo.getEmail() + " Login Success.");
 				
-				HttpSession session = request.getSession(true);
+				session = request.getSession(true);
 				session.setAttribute("authUser", userVo);
 				
-				url = "/mysite/main";
+				String beforePage = (String)session.getAttribute("beforePage");
+
+				if(beforePage == null)
+					url = "/mysite/main";
+				else
+					url = beforePage;
+					
 				WebUtil.redirect(request, response, url);
+
 			}
 			
 		} else if("logout".equals(actionName)) {
-			HttpSession session = request.getSession();
+			session = request.getSession();
+			String beforePage = (String)session.getAttribute("beforePage");
 			session.removeAttribute("authUser");
 			session.invalidate(); // 초기화
 			
-			url = "/mysite/main";
+			if(beforePage == null)
+				url = "/mysite/main";
+			else
+				url = beforePage;
+
 			WebUtil.redirect(request, response, url);
 			
 		} else if("modifyform".equals(actionName)) {
-			HttpSession session = request.getSession();
+			WebUtil.removeAttribute(request, "beforePage");
+			
+			session = request.getSession();
 			UserVo authUser = (UserVo)session.getAttribute("authUser");
 			
 			if(authUser == null) {
@@ -101,8 +120,9 @@ public class UserServlet extends HttpServlet {
 			}
 			
 		} else if("modify".equals(actionName)) {
+			WebUtil.removeAttribute(request, "beforePage");
 			
-			HttpSession session = request.getSession(); 
+			session = request.getSession(); 
 			UserVo authUser = (UserVo)session.getAttribute("authUser");
 			
 			if(authUser == null) {

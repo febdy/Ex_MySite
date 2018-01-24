@@ -62,6 +62,7 @@ public class UserServlet extends HttpServlet {
 			
 			if(userVo == null) {
 				System.out.println("Login failed.");
+				WebUtil.redirect(request, response, "/mysite/user?a=loginform&result=fail");
 			}
 			else {
 				System.out.println(userVo.getEmail() + " Login Success.");

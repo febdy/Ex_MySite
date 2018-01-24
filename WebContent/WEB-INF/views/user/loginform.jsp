@@ -28,8 +28,12 @@
 						<label class="block-label">패스워드</label> 
 						<input name="password" type="password" value="">
 						
-								
-								<P>로그인이 실패했습니다. 다시입력해주세요</P>
+						<% 
+							String result = request.getParameter("result");
+							if("fail".equals(result)){
+						%>		
+							<P>로그인이 실패했습니다. 다시입력해주세요</P>
+						<% } %>	
 						
 	
 						<input type="submit" value="로그인">

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.javaex.vo.GuestVo" %>
+<%@ page import="com.javaex.vo.UserVo" %>
 <%@ page import="java.util.List" %>
+<% UserVo authUser = (UserVo)session.getAttribute("authUser"); %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -25,7 +27,14 @@
 						
 						<table>
 							<tr>
-								<td>이름</td><td><input type="text" name="name" /></td>
+								<td>이름</td><td>
+								<% if (authUser == null) { %>
+									<input type="text" name="name" />
+								<% } else { %>
+								<%=authUser.getName()%>
+									<input type="hidden" name="name" value="<%=authUser.getName()%>">
+								<% } %>
+								</td>
 								<td>비밀번호</td><td><input type="password" name="password" /></td>
 							</tr>
 							<tr>

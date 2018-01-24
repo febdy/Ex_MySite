@@ -2,6 +2,7 @@
 <%@ page import="com.javaex.vo.UserVo" %>
 <%
 	UserVo authUser = (UserVo)session.getAttribute("authUser");
+	UserVo userVo =  (UserVo)session.getAttribute("userVo");
 %>
 <!DOCTYPE html>
 <html>
@@ -46,10 +47,10 @@
 
 						
 						<label class="block-label" for="name">이름</label>
-						<input id="name" name="name" type="text" value="<%=authUser.getName() %>" />
+						<input id="name" name="name" type="text" value="<%=userVo.getName() %>" />
 	
 						<label class="block-label" for="email">이메일</label>
-						<strong><%=authUser.getEmail() %></strong>
+						<strong><%=userVo.getEmail() %></strong>
 						
 						<label class="block-label">패스워드</label>
 						<input name="password" type="password" value="" />
@@ -57,16 +58,15 @@
 						<fieldset>
 							<legend>성별</legend>
 							
-							<label>여</label> <input type="radio" name="gender" 
-							<% if ((authUser.getGender()).equals("female")){ %> 
-								value="female" checked="checked">
+							<% if ((userVo.getGender()).equals("female")){ %> 
+								<label>여</label> <input type="radio" name="gender" value="female" checked="checked">
 								<label>남</label> <input type="radio" name="gender" value="male">
-							<% } else {%>
-								>
+							<% } else { %>
+								<label>여</label> <input type="radio" name="gender" value="female">
 								<label>남</label> <input type="radio" name="gender" value="male" checked="checked">
 							<% } %>
 						</fieldset>
-						<input type="hidden" name="no" value="<%=authUser.getNo()%>">
+						<input type="hidden" name="no" value="<%=userVo.getNo()%>">
 						<input type="hidden" name="a" value="modify">
 						<input type="submit" value="수정완료">
 						

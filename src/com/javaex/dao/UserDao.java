@@ -121,7 +121,7 @@ public class UserDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = "SELECT no, name, email, gender " 
+			String query = "SELECT no, name, email " 
 						 + " FROM users " 
 						 + " WHERE email = ? AND password = ? "
 						 + " ORDER BY no";
@@ -135,7 +135,6 @@ public class UserDao {
 				vo.setNo(rs.getInt("no"));
 				vo.setName(rs.getString("name"));
 				vo.setEmail(rs.getString("email"));
-				vo.setGender(rs.getString("gender"));
 			}
 			
 		} catch (ClassNotFoundException e) {

@@ -20,12 +20,11 @@ public class UserServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		String url, actionName;
-		final String userDefaultUrl = "/WEB-INF/views/user";
 		
 		actionName = request.getParameter("a");
 		
 		if("joinform".equals(actionName)) {
-			url = userDefaultUrl + "/joinform.jsp";
+			url = "/WEB-INF/views/user/joinform.jsp";
 			WebUtil.forward(request, response, url);
 			
 		} else if("join".equals(actionName)) {
@@ -47,11 +46,11 @@ public class UserServlet extends HttpServlet {
 			WebUtil.forward(request, response, url);
 			
 		} else if("joinsuccess".equals(actionName)) {
-			url = userDefaultUrl + "/joinsuccess.jsp";
+			url = "/WEB-INF/views/user/joinsuccess.jsp";
 			WebUtil.forward(request, response, url);
 			
 		} else if("loginform".equals(actionName)) {
-			url = userDefaultUrl + "/loginform.jsp";
+			url = "/WEB-INF/views/user/loginform.jsp";
 			WebUtil.forward(request, response, url);
 		
 		} else if("login".equals(actionName)) {
@@ -85,31 +84,53 @@ public class UserServlet extends HttpServlet {
 		} else if("modifyform".equals(actionName)) {
 			HttpSession session = request.getSession();
 			UserVo authUser = (UserVo)session.getAttribute("authUser");
-						
-			request.setAttribute("userInfo", authUser);
-			url = userDefaultUrl + "/modifyform.jsp";
-			WebUtil.forward(request, response, url);
-		
+			
+			if(authUser == null) {
+				WebUtil.redirect(request, response, "user?a=loginform");
+				
+			} else {
+				int no = authUser.getNo();
+
+				UserDao userDao = new UserDao();
+				UserVo userVo = userDao.getUser(no);
+				
+				session.setAttribute("userVo", userVo);
+				url = "/WEB-INF/views/user/modifyform.jsp";
+				WebUtil.forward(request, response, url);
+			}
+			
 		} else if("modify".equals(actionName)) {
-			int no = Integer.valueOf(request.getParameter("no"));
-			String name = request.getParameter("name");
-			String password = request.getParameter("password");
-			String gender = request.getParameter("gender");
 			
-			UserDao userDao = new UserDao();
-			UserVo userVo = userDao.getUser(no);
+			HttpSession session = request.getSession(); 
+			UserVo authUser = (UserVo)session.getAttribute("authUser");
 			
-			userVo.setName(name);
-			if(password != "")
-				userVo.setPassword(password);
-			userVo.setGender(gender);
-			userDao.update(userVo);
+			if(authUser == null) {
+				WebUtil.redirect(request, response, "user?a=loginform");
+				
+			} else {	
+				String name = request.getParameter("name");
+				String password = request.getParameter("password");
+				String gender = request.getParameter("gender");
+				System.out.println(gender);
+				
+				UserDao userDao = new UserDao();
+				UserVo userVo = (UserVo)session.getAttribute("userVo");
 			
-			url = "main";
-			WebUtil.redirect(request, response, url);
+				userVo.setName(name);
+				if(password != "")
+					userVo.setPassword(password);
+				userVo.setGender(gender);
+				userDao.update(userVo);
+				
+				authUser.setName(name); // authUser 이름 갱신
+
+				url = "main";
+				WebUtil.redirect(request, response, url);
+			}
+		
 		}
 		
-	}
+	} // doGet
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

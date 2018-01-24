@@ -12,13 +12,7 @@
 		
 		<jsp:include page = "/WEB-INF/views/includes/header.jsp" />
 		
-		<div id="navigation">
-			<ul>
-				<li><a href="">--</a></li>
-				<li><a href="">방명록</a></li>
-				<li><a href="">게시판</a></li>
-			</ul>
-		</div> <!-- /navigation -->
+		<jsp:include page = "/WEB-INF/views/includes/navigation.jsp" />
 
 		<div id="wrapper">
 			<div id="content">
@@ -36,9 +30,7 @@
 			</div>
 		</div>
 		
-		<div id="footer">
-			<p>(c)opyright 2015,2016,2017</p>
-		</div> <!-- /footer -->
+		<jsp:include page = "/WEB-INF/views/includes/footer.jsp" />
 		
 	</div>
 </body>

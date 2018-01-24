@@ -29,7 +29,7 @@
 								<td>비밀번호</td><td><input type="password" name="password" /></td>
 							</tr>
 							<tr>
-								<td colspan=4><textarea name="content" id="content"></textarea></td>
+								<td colspan=4><textarea name="content" id="content" placeholder="내용을 입력해주세요."></textarea></td>
 							</tr>
 							<tr>
 								<td><input type="hidden" name="a" value="add"></td>

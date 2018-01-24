@@ -37,7 +37,7 @@ public class GuestbookServlet extends HttpServlet {
 			request.setCharacterEncoding("UTF-8");
 
 			String name = request.getParameter("name");
-			String password = request.getParameter("pass");
+			String password = request.getParameter("password");
 			String content = request.getParameter("content");
 			
 			dao = new GuestBookDao();
@@ -51,13 +51,13 @@ public class GuestbookServlet extends HttpServlet {
 		} else if ("deleteform".equals(actionName)) {
 			int no = Integer.parseInt(request.getParameter("no"));
 			request.setAttribute("no", no);
-			url = "/WEB-INF/deleteform.jsp";
+			url = "/WEB-INF/views/guestbook/deleteform.jsp";
 			WebUtil.forward(request, response, url);
 			
 		} else if("delete".equals(actionName)){
 			int no = Integer.parseInt(request.getParameter("no"));
 			String password = request.getParameter("password");
-			
+
 			dao = new GuestBookDao();
 			dao.delete(no, password);
 			

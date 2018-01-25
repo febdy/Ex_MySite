@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-	String no = request.getParameter("no");
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html>
@@ -13,9 +11,9 @@
 <body>
 	<div id="container">
 		
-		<jsp:include page = "/WEB-INF/views/includes/header.jsp" />
-		
-		<jsp:include page = "/WEB-INF/views/includes/navigation.jsp" />
+		<c:import url="/WEB-INF/views/includes/header.jsp" />
+
+		<c:import url="/WEB-INF/views/includes/navigation.jsp" />
 		
 		<div id="wrapper">
 			<div id="content">
@@ -24,7 +22,7 @@
 					<form method="get" action="guestbook">
 						<label>비밀번호</label>
 						<input type="password" name="password">
-						<input type="hidden" name="no" value="<%=no %>">
+						<input type="hidden" name="no" value="${no}">
 						<input type="hidden" name="a" value="delete">
 						<input type="submit" value="확인">
 					</form>
@@ -34,7 +32,7 @@
 			</div><!-- /content -->
 		</div><!-- /wrapper -->
 		
-		<jsp:include page = "/WEB-INF/views/includes/footer.jsp" />
+		<c:import url="/WEB-INF/views/includes/footer.jsp" />
 		
 	</div> <!-- /container -->
 

@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="com.javaex.vo.BoardVo" %>
-<%
-	List<BoardVo> bList = (List)request.getAttribute("bList");
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -15,9 +11,9 @@
 <body>
 	<div id="container">
 		
-		<jsp:include page = "/WEB-INF/views/includes/header.jsp" />
-		
-		<jsp:include page = "/WEB-INF/views/includes/navigation.jsp" />
+		<c:import url="/WEB-INF/views/includes/header.jsp" />
+
+		<c:import url="/WEB-INF/views/includes/navigation.jsp" />
 		
 		<div id="content">
 			<div id="board">
@@ -34,17 +30,20 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>
-					<% for(BoardVo bVo : bList) {%>				
+					
+					<c:forEach items="${bList}" var="bVo" varStatus="status">
 						<tr>
-							<td><%=bVo.getArticleNo() %></td>
-							<td><a href="board?a=view&no=<%=bVo.getArticleNo() %>"><%=bVo.getTitle() %></a></td>
-							<td><%=bVo.getWriter() %></td>
-							<td><%=bVo.getViewCount() %></td>
-							<td><%=bVo.getDate() %></td>
+							<td>${bVo.articleNo}</td>
+							<td><a href="board?a=view&no=${bVo.articleNo}">${bVo.title}</a></td>
+							<td>${bVo.writer}</td>
+							<td>${bVo.viewCount}</td>
+							<td>${bVo.date}</td>
 							<td><a href="" class="del">삭제</a></td>
 						</tr>
-					<% } %>
+					</c:forEach>
+					
 				</table>
+				
 				<div class="pager">
 					<ul>
 						<li><a href="">◀</a></li>
@@ -62,7 +61,7 @@
 			</div>
 		</div>
 		
-		<jsp:include page = "/WEB-INF/views/includes/footer.jsp" />
+			<c:import url="/WEB-INF/views/includes/footer.jsp" />
 		
 	</div>
 </body>

@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.javaex.vo.GuestVo" %>
-<%@ page import="com.javaex.vo.UserVo" %>
-<%@ page import="java.util.List" %>
-<% UserVo authUser = (UserVo)session.getAttribute("authUser"); %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -15,9 +12,9 @@
 
 	<div id="container">
 		
-		<jsp:include page = "/WEB-INF/views/includes/header.jsp" />
-		
-		<jsp:include page = "/WEB-INF/views/includes/navigation.jsp" />
+		<c:import url="/WEB-INF/views/includes/header.jsp" />
+
+		<c:import url="/WEB-INF/views/includes/navigation.jsp" />
 		
 		<div id="wrapper">
 			<div id="content">
@@ -28,12 +25,15 @@
 						<table>
 							<tr>
 								<td>이름</td><td>
-								<% if (authUser == null) { %>
-									<input type="text" name="name" />
-								<% } else { %>
-								<%=authUser.getName()%>
-									<input type="hidden" name="name" value="<%=authUser.getName()%>">
-								<% } %>
+								<c:choose>
+									<c:when test="${authUser} == null">
+										<input type="text" name="name" />
+									</c:when>
+									<c:otherwise>
+										${authUser.name}
+										<input type="hidden" name="name" value="${authUser.name}">
+									</c:otherwise>
+								</c:choose>
 								</td>
 								<td>비밀번호</td><td><input type="password" name="password" /></td>
 							</tr>
@@ -47,34 +47,22 @@
 						</table>
 					</form>
 					<ul>
-						<li>
-						
-							<% 
-								List<GuestVo> gList = (List)request.getAttribute("gList");
-								
-								for(GuestVo gVo : gList){
-									int no = gVo.getNo();
-									String name = gVo.getName();
-									String content = gVo.getContent();
-									String date = gVo.getDate();
-								
-							%>
-							
-							<table>
-								<tr>
-									<td><%=no %></td>
-									<td><%=name %></td>
-									<td><%=date %></td>
-									<td><a href="guestbook?a=deleteform&no=<%=no %>">삭제</a></td>
-								</tr>
-								<tr>
-									<td colspan=4>
-										<%=content %>
-									</td>
-								</tr>
-							</table>
-							
-							<%} %>
+						<li>							
+							<c:forEach items="${gList}" var="gVo" varStatus="status">
+								<table>
+									<tr>
+										<td>${gVo.no}</td>
+										<td>${gVo.name}</td>
+										<td>${gVo.date}</td>
+										<td><a href="guestbook?a=deleteform&no=${gVo.no}">삭제</a></td>
+									</tr>
+									<tr>
+										<td colspan=4>
+											${gVo.content}
+										</td>
+									</tr>
+								</table>
+							</c:forEach>
 							
 							<br>
 						</li>
@@ -84,7 +72,7 @@
 			</div><!-- /content -->
 		</div><!-- /wrapper -->
 		
-		<jsp:include page = "/WEB-INF/views/includes/footer.jsp" />
+		<c:import url="/WEB-INF/views/includes/footer.jsp" />
 		
 	</div> <!-- /container -->
 

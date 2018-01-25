@@ -146,7 +146,7 @@ public class UserServlet extends HttpServlet {
 				authUser.setName(name); // authUser 이름 갱신
 
 				url = "main";
-			//	WebUtil.redirect(request, response, url);
+				WebUtil.redirect(request, response, url);
 			}
 		
 		}

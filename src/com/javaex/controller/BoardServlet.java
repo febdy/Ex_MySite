@@ -8,10 +8,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.javaex.dao.BoardDao;
 import com.javaex.util.WebUtil;
 import com.javaex.vo.BoardVo;
+import com.javaex.vo.UserVo;
 
 @WebServlet("/board")
 public class BoardServlet extends HttpServlet {
@@ -35,11 +37,17 @@ public class BoardServlet extends HttpServlet {
 			WebUtil.forward(request, response, url);
 
 		} else if("write".equals(actionName)) {
+			HttpSession session = request.getSession();
+			UserVo authUser = (UserVo) session.getAttribute("authUser");
+			
 			String title = request.getParameter("title");
 			String content = request.getParameter("content");
 			
 			BoardVo boardVo = new BoardVo();
+			boardVo.setWriterNo(authUser.getNo());
 			boardVo.setTitle(title);
+			boardVo.setWriter(authUser.getName());
+			boardVo.setViewCount(0);
 			boardVo.setContent(content);
 			
 			BoardDao boardDao = new BoardDao();
@@ -49,6 +57,11 @@ public class BoardServlet extends HttpServlet {
 			WebUtil.redirect(request, response, url);
 			
 		} else if("view".equals(actionName)) {
+			int no = Integer.valueOf(request.getParameter("no"));
+			BoardDao boardDao = new BoardDao();
+			BoardVo boardVo = boardDao.getArticle(no);
+			
+			request.setAttribute("boardVo", boardVo);
 			url = "/WEB-INF/views/board/view.jsp";
 			WebUtil.forward(request, response, url);
 			

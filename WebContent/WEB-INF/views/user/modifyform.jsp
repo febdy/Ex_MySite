@@ -45,6 +45,7 @@
 									<label>남</label> <input type="radio" name="gender" value="male" checked="checked">
 								</c:otherwise>
 							</c:choose>
+							
 						</fieldset>
 						<input type="hidden" name="no" value="${userVo.no}">
 						<input type="hidden" name="a" value="modify">

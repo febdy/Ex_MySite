@@ -27,7 +27,7 @@ public class BoardDao {
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			String query = "INSERT INTO board " 
-						 + "VALUES (seq_article_no.nextval, ?, ?, ?, ?, sysdate, ?)";
+						 + "VALUES (seq_article_no.nextval, ?, ?, ?, 0, sysdate, ?)";
 
 			/* select article_no, writer_no, title, writer, view_count, write_date, content from board; */
 			
@@ -35,8 +35,7 @@ public class BoardDao {
 			pstmt.setInt(1, boardVo.getWriterNo());
 			pstmt.setString(2, boardVo.getTitle());
 			pstmt.setString(3, boardVo.getWriter());
-			pstmt.setInt(4, boardVo.getViewCount());
-			pstmt.setString(5, boardVo.getContent());
+			pstmt.setString(4, boardVo.getContent());
 			
 			int cnt = pstmt.executeUpdate();
 
@@ -61,6 +60,45 @@ public class BoardDao {
 		}
 	}
 
+	public void view(int no, int viewCount) {
+		try {
+			// 1. JDBC 드라이버 (Oracle) 로딩
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+
+			// 2. Connection 얻어오기
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			conn = DriverManager.getConnection(url, "webdb", "webdb");
+
+			// 3. SQL문 준비 / 바인딩 / 실행
+			String query = "UPDATE board " 
+						 + "SET view_count = ? "
+						 + "WHERE article_no = ? ";
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, viewCount);
+			pstmt.setInt(2, no);
+			pstmt.executeUpdate();
+
+		} catch (ClassNotFoundException e) {
+			System.out.println("error: 드라이버 로딩 실패 - " + e);
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			// 5. 자원정리
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			}
+		}
+		
+	}
+	
 	public List<BoardVo> getList() {
 		List<BoardVo> bList = new ArrayList<>();
 		BoardVo boardVo;

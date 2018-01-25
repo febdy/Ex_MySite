@@ -60,6 +60,7 @@ public class BoardServlet extends HttpServlet {
 			int no = Integer.valueOf(request.getParameter("no"));
 			BoardDao boardDao = new BoardDao();
 			BoardVo boardVo = boardDao.getArticle(no);
+			boardDao.view(no, boardVo.getViewCount()+1);
 			
 			request.setAttribute("boardVo", boardVo);
 			url = "/WEB-INF/views/board/view.jsp";

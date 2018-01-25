@@ -38,7 +38,9 @@
 							<td>${bVo.writer}</td>
 							<td>${bVo.viewCount}</td>
 							<td>${bVo.date}</td>
-							<td><a href="" class="del">삭제</a></td>
+							<td><c:if test="${bVo.writerNo == authUser.no}">
+								<a href="board?a=delete&no=${bVo.articleNo}&writerno=${bVo.writerNo}" class="del">삭제</a>
+								</c:if></td>
 						</tr>
 					</c:forEach>
 					
@@ -54,7 +56,7 @@
 						<li>5</li>
 						<li><a href="">▶</a></li>
 					</ul>
-				</div>				
+				</div>
 				<div class="bottom">
 					<c:if test="${not empty authUser}">
 						<a href="board?a=writeform" id="new-book">글쓰기</a>

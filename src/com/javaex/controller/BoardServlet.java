@@ -106,6 +106,23 @@ public class BoardServlet extends HttpServlet {
 			
 			WebUtil.redirect(request, response, url);			
 			
+		} else if("delete".equals(actionName)) {
+			HttpSession session = request.getSession();
+			UserVo authUser = (UserVo) session.getAttribute("authUser");
+			int no = Integer.parseInt(request.getParameter("no"));
+			int writerNo = Integer.parseInt(request.getParameter("writerno"));
+			
+			if((authUser != null) && (authUser.getNo() == writerNo)) {
+				BoardDao boardDao = new BoardDao();
+				boardDao.delete(no);
+				
+			} else {
+				
+			}
+
+			url = "board?a=list";
+			WebUtil.redirect(request, response, url);
+			
 		}
 
 	}

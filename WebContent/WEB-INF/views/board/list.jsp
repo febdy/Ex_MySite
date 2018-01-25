@@ -56,7 +56,9 @@
 					</ul>
 				</div>				
 				<div class="bottom">
-					<a href="board?a=writeform" id="new-book">글쓰기</a>
+					<c:if test="${not empty authUser}">
+						<a href="board?a=writeform" id="new-book">글쓰기</a>
+					</c:if>
 				</div>				
 			</div>
 		</div>

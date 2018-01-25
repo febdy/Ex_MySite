@@ -65,6 +65,47 @@ public class BoardServlet extends HttpServlet {
 			url = "/WEB-INF/views/board/view.jsp";
 			WebUtil.forward(request, response, url);
 			
+		} else if("modifyform".equals(actionName)) {
+			HttpSession session = request.getSession();
+			UserVo authUser = (UserVo) session.getAttribute("authUser");
+
+			int no = Integer.valueOf(request.getParameter("no"));
+			BoardDao boardDao = new BoardDao();
+			BoardVo boardVo = boardDao.getArticle(no);
+			
+			if((authUser != null) && (authUser.getNo() == boardVo.getWriterNo())) {
+				request.setAttribute("boardVo", boardVo);
+				url = "/WEB-INF/views/board/modify.jsp";				
+				WebUtil.forward(request, response, url);
+			} else {
+				url = "board?a=list";
+				WebUtil.redirect(request, response, url);
+			}
+			
+		} else if("modify".equals(actionName)) {
+			HttpSession session = request.getSession();
+			UserVo authUser = (UserVo) session.getAttribute("authUser");
+			
+			int no = Integer.valueOf(request.getParameter("no"));
+			BoardDao boardDao = new BoardDao();
+			BoardVo boardVo = boardDao.getArticle(no);
+
+			if((authUser != null) && (authUser.getNo() == boardVo.getWriterNo())) {
+				String newTitle = request.getParameter("title");
+				String newContent = request.getParameter("content");
+				
+				boardVo.setTitle(newTitle);
+				boardVo.setContent(newContent);
+				
+				boardDao.modify(boardVo);
+			
+				url = "board?a=view&no=" + boardVo.getArticleNo();
+			} else {
+				url = "board?a=list";
+			}
+			
+			WebUtil.redirect(request, response, url);			
+			
 		}
 
 	}

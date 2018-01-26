@@ -59,7 +59,7 @@ public class BoardDao {
 		}
 	}
 
-	public void view(int no, int hit) {
+	public void updateHit(int no) {
 		try {
 			// 1. JDBC 드라이버 (Oracle) 로딩
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -70,12 +70,11 @@ public class BoardDao {
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			String query = "UPDATE board " 
-						 + "SET hit = ? "
+						 + "SET hit = hit + 1 "
 						 + "WHERE no = ? ";
 			
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, hit);
-			pstmt.setInt(2, no);
+			pstmt.setInt(1, no);
 			pstmt.executeUpdate();
 
 		} catch (ClassNotFoundException e) {

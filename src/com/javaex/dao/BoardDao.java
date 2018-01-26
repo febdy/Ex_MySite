@@ -27,15 +27,14 @@ public class BoardDao {
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			String query = "INSERT INTO board " 
-						 + "VALUES (seq_article_no.nextval, ?, ?, ?, 0, sysdate, ?)";
+						 + "VALUES (seq_article_no.nextval, ?, ?, 0, sysdate, ?)";
 
-			/* select article_no, writer_no, title, writer, view_count, write_date, content from board; */
+			/* no, title, content, hit, reg_date, user_no */
 			
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, boardVo.getWriterNo());
-			pstmt.setString(2, boardVo.getTitle());
-			pstmt.setString(3, boardVo.getWriter());
-			pstmt.setString(4, boardVo.getContent());
+			pstmt.setString(1, boardVo.getTitle());
+			pstmt.setString(2, boardVo.getContent());
+			pstmt.setInt(3, boardVo.getUserNo());
 			
 			int cnt = pstmt.executeUpdate();
 
@@ -60,7 +59,7 @@ public class BoardDao {
 		}
 	}
 
-	public void view(int no, int viewCount) {
+	public void view(int no, int hit) {
 		try {
 			// 1. JDBC 드라이버 (Oracle) 로딩
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -71,11 +70,11 @@ public class BoardDao {
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			String query = "UPDATE board " 
-						 + "SET view_count = ? "
-						 + "WHERE article_no = ? ";
+						 + "SET hit = ? "
+						 + "WHERE no = ? ";
 			
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, viewCount);
+			pstmt.setInt(1, hit);
 			pstmt.setInt(2, no);
 			pstmt.executeUpdate();
 
@@ -112,9 +111,10 @@ public class BoardDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = "SELECT article_no, writer_no, title, writer, view_count, write_date, content "
-						 + "FROM board "
-						 + "ORDER BY article_no DESC";
+			String query = "SELECT board.no no, title, content, hit, to_char(reg_date, 'YY-MM-DD HH:MM') reg_date, user_no, name "
+						 + "FROM board, users "
+						 + "WHERE board.user_no = users.no "
+						 + "ORDER BY board.no DESC";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.executeQuery();
@@ -122,13 +122,14 @@ public class BoardDao {
 
 			while (rs.next()) {
 				boardVo = new BoardVo();
-				boardVo.setArticleNo(rs.getInt("article_no"));
-				boardVo.setWriterNo(rs.getInt("writer_no"));
+				boardVo.setNo(rs.getInt("no"));
 				boardVo.setTitle(rs.getString("title"));
-				boardVo.setWriter(rs.getString("writer"));
-				boardVo.setViewCount(rs.getInt("view_count"));
-				boardVo.setDate(rs.getString("write_date"));
 				boardVo.setContent(rs.getString("content"));
+				boardVo.setHit(rs.getInt("hit"));
+				boardVo.setDate(rs.getString("reg_date"));
+				boardVo.setUserNo(rs.getInt("user_no"));
+				boardVo.setName(rs.getString("name"));
+				
 				bList.add(boardVo);
 			}
 			
@@ -168,9 +169,9 @@ public class BoardDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = "SELECT article_no, writer_no, title, writer, view_count, write_date, content "
+			String query = "SELECT no, title, content, hit, user_no "
 						 + "FROM board "
-						 + "WHERE article_no = ?";
+						 + "WHERE no = ?";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, no);
@@ -178,13 +179,11 @@ public class BoardDao {
 
 			while (rs.next()) {
 				boardVo = new BoardVo();
-				boardVo.setArticleNo(rs.getInt("article_no"));
-				boardVo.setWriterNo(rs.getInt("writer_no"));
+				boardVo.setNo(rs.getInt("no"));
 				boardVo.setTitle(rs.getString("title"));
-				boardVo.setWriter(rs.getString("writer"));
-				boardVo.setViewCount(rs.getInt("view_count"));
-				boardVo.setDate(rs.getString("write_date"));
 				boardVo.setContent(rs.getString("content"));
+				boardVo.setHit(rs.getInt("hit"));
+				boardVo.setUserNo(rs.getInt("user_no"));
 			}
 			
 		} catch (ClassNotFoundException e) {
@@ -222,13 +221,13 @@ public class BoardDao {
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			String query = "UPDATE board " 
-						 + "SET title = ?, content = ?, write_date = sysdate "
-						 + "WHERE article_no = ?";
+						 + "SET title = ?, content = ? "
+						 + "WHERE no = ?";
 			
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, boardVo.getTitle());
 			pstmt.setString(2, boardVo.getContent());
-			pstmt.setInt(3, boardVo.getArticleNo());
+			pstmt.setInt(3, boardVo.getNo());
 			
 			int cnt = pstmt.executeUpdate();
 
@@ -253,7 +252,7 @@ public class BoardDao {
 		}
 	}
 	
-	public void delete(int articleNo) {
+	public void delete(int no) {
 		try {
 			// 1. JDBC 드라이버 (Oracle) 로딩
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -264,14 +263,14 @@ public class BoardDao {
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			String query = "DELETE FROM board " 
-						 + "WHERE article_no = ?";
+						 + "WHERE no = ?";
 			
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, articleNo);
+			pstmt.setInt(1, no);
 			
 			int cnt = pstmt.executeUpdate();
 
-			System.out.println(articleNo + "번 삭제완료");
+			System.out.println(no + "번 삭제완료");
 
 		} catch (ClassNotFoundException e) {
 			System.out.println("error: 드라이버 로딩 실패 - " + e);

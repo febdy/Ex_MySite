@@ -33,13 +33,13 @@
 					
 					<c:forEach items="${bList}" var="bVo" varStatus="status">
 						<tr>
-							<td>${bVo.articleNo}</td>
-							<td><a href="board?a=view&no=${bVo.articleNo}">${bVo.title}</a></td>
-							<td>${bVo.writer}</td>
-							<td>${bVo.viewCount}</td>
+							<td>${bVo.no}</td>
+							<td><a href="board?a=view&no=${bVo.no}">${bVo.title}</a></td>
+							<td>${bVo.name}</td>
+							<td>${bVo.hit}</td>
 							<td>${bVo.date}</td>
-							<td><c:if test="${bVo.writerNo == authUser.no}">
-								<a href="board?a=delete&no=${bVo.articleNo}&writerno=${bVo.writerNo}" class="del">삭제</a>
+							<td><c:if test="${bVo.userNo == authUser.no}">
+								<a href="board?a=delete&no=${bVo.no}&userno=${bVo.userNo}" class="del">삭제</a>
 								</c:if></td>
 						</tr>
 					</c:forEach>

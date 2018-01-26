@@ -44,11 +44,11 @@ public class BoardServlet extends HttpServlet {
 			String content = request.getParameter("content");
 			
 			BoardVo boardVo = new BoardVo();
-			boardVo.setWriterNo(authUser.getNo());
 			boardVo.setTitle(title);
-			boardVo.setWriter(authUser.getName());
-			boardVo.setViewCount(0);
 			boardVo.setContent(content);
+			boardVo.setHit(0);
+			boardVo.setUserNo(authUser.getNo());
+			boardVo.setName(authUser.getName());
 			
 			BoardDao boardDao = new BoardDao();
 			boardDao.write(boardVo);
@@ -60,7 +60,7 @@ public class BoardServlet extends HttpServlet {
 			int no = Integer.valueOf(request.getParameter("no"));
 			BoardDao boardDao = new BoardDao();
 			BoardVo boardVo = boardDao.getArticle(no);
-			boardDao.view(no, boardVo.getViewCount()+1);
+			boardDao.view(no, boardVo.getHit()+1);
 			
 			request.setAttribute("boardVo", boardVo);
 			url = "/WEB-INF/views/board/view.jsp";
@@ -74,7 +74,7 @@ public class BoardServlet extends HttpServlet {
 			BoardDao boardDao = new BoardDao();
 			BoardVo boardVo = boardDao.getArticle(no);
 			
-			if((authUser != null) && (authUser.getNo() == boardVo.getWriterNo())) {
+			if((authUser != null) && (authUser.getNo() == boardVo.getUserNo())) {
 				request.setAttribute("boardVo", boardVo);
 				url = "/WEB-INF/views/board/modify.jsp";				
 				WebUtil.forward(request, response, url);
@@ -91,7 +91,7 @@ public class BoardServlet extends HttpServlet {
 			BoardDao boardDao = new BoardDao();
 			BoardVo boardVo = boardDao.getArticle(no);
 
-			if((authUser != null) && (authUser.getNo() == boardVo.getWriterNo())) {
+			if((authUser != null) && (authUser.getNo() == boardVo.getUserNo())) {
 				String newTitle = request.getParameter("title");
 				String newContent = request.getParameter("content");
 				
@@ -99,25 +99,21 @@ public class BoardServlet extends HttpServlet {
 				boardVo.setContent(newContent);
 				
 				boardDao.modify(boardVo);
+			} 
 			
-				url = "board?a=view&no=" + boardVo.getArticleNo();
-			} else {
-				url = "board?a=list";
-			}
-			
+			url = "board?a=list";
 			WebUtil.redirect(request, response, url);			
 			
 		} else if("delete".equals(actionName)) {
 			HttpSession session = request.getSession();
 			UserVo authUser = (UserVo) session.getAttribute("authUser");
-			int no = Integer.parseInt(request.getParameter("no"));
-			int writerNo = Integer.parseInt(request.getParameter("writerno"));
 			
-			if((authUser != null) && (authUser.getNo() == writerNo)) {
+			int no = Integer.parseInt(request.getParameter("no"));
+			int userNo = Integer.parseInt(request.getParameter("userno"));
+			
+			if((authUser != null) && (authUser.getNo() == userNo)) {
 				BoardDao boardDao = new BoardDao();
 				boardDao.delete(no);
-				
-			} else {
 				
 			}
 

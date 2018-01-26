@@ -36,8 +36,8 @@
 				</table>
 				<div class="bottom">
 					<a href="board?a=list">글목록</a>
-					<c:if test="${boardVo.writerNo == authUser.no}">
-						<a href="board?a=modifyform&no=${boardVo.articleNo}">글수정</a>
+					<c:if test="${boardVo.userNo == authUser.no}">
+						<a href="board?a=modifyform&no=${boardVo.no}">글수정</a>
 					</c:if>
 				</div>
 			</div>

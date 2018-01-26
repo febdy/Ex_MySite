@@ -40,9 +40,9 @@
 						</tr>
 					</table>
 					<div class="bottom">
-						<input type="hidden" name="no" value="${boardVo.articleNo}">
+						<input type="hidden" name="no" value="${boardVo.no}">
 						<input type="hidden" name="a" value="modify">
-						<a href="">취소</a>
+						<a href="board?a=view&no=${boardVo.no}">취소</a>
 						<input type="submit" value="수정">
 					</div>
 				</form>				

@@ -19,7 +19,7 @@
 			<div id="content">
 				<div id="site-introduction">
 					<img style="width: 150px" id="profile" src="/mysite/assets/images/profile.jpg">
-					<h2>안녕하세요.<br> --의 mysite에 방문하신 것을<br/> 환영합니다.</h2>
+					<h2>안녕하세요.<br> 이다영의 mysite에 방문하신 것을<br/> 환영합니다.</h2>
 					<p>
 						--
 						<br>

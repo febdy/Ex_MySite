@@ -43,6 +43,7 @@
 							<input id="agree-prov" type="checkbox" name="agreeProv" value="y">
 							<label>서비스 약관에 동의합니다.</label>
 						</fieldset>
+						
 						<input type="hidden" name="a" value="join">
 						<input type="submit" value="가입하기">
 						

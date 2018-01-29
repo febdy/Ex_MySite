@@ -20,13 +20,13 @@
 			<div id="content">
 				<div id="guestbook">
 					
-					<form action="guestbook" method="get">
+					<form action="guestbook" method="post">
 						
 						<table>
 							<tr>
 								<td>이름</td><td>
 								<c:choose>
-									<c:when test="${authUser} == null">
+									<c:when test="${empty authUser}">
 										<input type="text" name="name" />
 									</c:when>
 									<c:otherwise>

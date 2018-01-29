@@ -19,7 +19,7 @@
 			<div id="content">
 				<div id="guestbook" class="delete-form">
 					
-					<form method="get" action="guestbook">
+					<form method="post" action="guestbook">
 						<label>비밀번호</label>
 						<input type="password" name="password">
 						<input type="hidden" name="no" value="${no}">

@@ -2,6 +2,6 @@
 	pageEncoding="UTF-8"%>
 
 <div id="footer">
-	<p>(c)opyright 2015,2016,2017</p>
+	<p>(c)opyright 2015,2016,2017,2018</p>
 </div>
 <!-- /footer -->

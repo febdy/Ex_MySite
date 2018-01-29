@@ -20,9 +20,8 @@
 			<div id="content">
 				<div id="user">
 	
-					<form id="join-form" name="joinForm" method="get" action="user">
+					<form id="join-form" name="joinForm" method="post" action="user">
 
-						
 						<label class="block-label" for="name">이름</label>
 						<input id="name" name="name" type="text" value="${userVo.name}" />
 	
@@ -45,8 +44,8 @@
 									<label>남</label> <input type="radio" name="gender" value="male" checked="checked">
 								</c:otherwise>
 							</c:choose>
-							
 						</fieldset>
+
 						<input type="hidden" name="no" value="${userVo.no}">
 						<input type="hidden" name="a" value="modify">
 						<input type="submit" value="수정완료">

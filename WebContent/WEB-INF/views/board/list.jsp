@@ -49,13 +49,28 @@
 				
 				<div class="pager">
 					<ul>
-						<li><a href="">◀</a></li>
-						<li><a href="">1</a></li>
-						<li><a href="">2</a></li>
-						<li class="selected">3</li>
-						<li><a href="">4</a></li>
-						<li>5</li>
-						<li><a href="">▶</a></li>
+						<c:if test="${page > 1}">
+							<li><a href="board?a=list&page=${page-1}">◀</a></li>
+						</c:if>
+						<c:if test="${page <= 1 }">
+							<li>◀</li>
+						</c:if>
+						
+						<c:forEach var="i" begin="1" end="5" step="1">
+							<c:if test="${page == i}">
+								<li class="selected"><a href="board?a=list&page=${i}">${i}</a></li>
+							</c:if>
+							<c:if test="${page != i}">
+								<li><a href="board?a=list&page=${i}">${i}</a></li>
+							</c:if>
+						</c:forEach>
+
+						<c:if test="${page < 5}">
+							<li><a href="board?a=list&page=${page+1}">▶</a></li>
+						</c:if>
+						<c:if test="${page >= 5 }">
+							<li>▶</li>
+						</c:if>
 					</ul>
 				</div>
 				<div class="bottom">

@@ -97,9 +97,10 @@ public class BoardDao {
 		
 	}
 	
-	public List<BoardVo> getList() {
+	public List<BoardVo> getList(int page) {
 		List<BoardVo> bList = new ArrayList<>();
 		BoardVo boardVo;
+		final int numByPage = 5;
 
 		try {
 			// 1. JDBC 드라이버 (Oracle) 로딩
@@ -110,12 +111,18 @@ public class BoardDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = "SELECT board.no no, title, content, hit, to_char(reg_date, 'YY-MM-DD HH:MM') reg_date, user_no, name "
-						 + "FROM board, users "
-						 + "WHERE board.user_no = users.no "
-						 + "ORDER BY board.no DESC";
+			String query = "SELECT no, title, content, hit, reg_date, user_no, name " + 
+						   "FROM (SELECT rownum rn, board.no no, title, content, hit, " +
+						   "to_char(reg_date, 'YY-MM-DD HH:MM') reg_date, user_no, name " + 
+						   "      FROM board, users " + 
+						   "      WHERE board.user_no = users.no " + 
+						   "      ORDER BY board.no DESC) " + 
+						   "WHERE ? < rn " + 
+						   "AND rn <= ?";
 
 			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, numByPage * (page-1));
+			pstmt.setInt(2, numByPage * page);
 			pstmt.executeQuery();
 			rs = pstmt.getResultSet();
 

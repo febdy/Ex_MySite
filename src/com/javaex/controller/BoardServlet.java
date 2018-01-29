@@ -25,12 +25,20 @@ public class BoardServlet extends HttpServlet {
 		String url;
 		
 		if("list".equals(actionName)) {
-			WebUtil.setBeforePage(request, "board?a=list");
-			
+			String paramPage = request.getParameter("page");
+			int page = 1;
+
+			if(paramPage != null) {
+				 page = Integer.parseInt(request.getParameter("page"));
+			}
+
+			WebUtil.setBeforePage(request, "board?a=list&page=" + page);
+
 			BoardDao boardDao = new BoardDao();
-			List<BoardVo> bList = boardDao.getList();
+			List<BoardVo> bList = boardDao.getList(page);
 			
 			request.setAttribute("bList", bList);
+			request.setAttribute("page", page);
 			url = "/WEB-INF/views/board/list.jsp";
 			WebUtil.forward(request, response, url);
 

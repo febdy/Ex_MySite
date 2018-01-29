@@ -32,8 +32,7 @@ public class GuestbookServlet extends HttpServlet {
 			
 			url = "/WEB-INF/views/guestbook/list.jsp";
 
-			HttpSession session = request.getSession();
-			session.setAttribute("beforePage", "guestbook?a=list");
+			WebUtil.setBeforePage(request, "guestbook?a=list");
 
 			WebUtil.forward(request, response, url);
 			

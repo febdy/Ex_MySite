@@ -27,8 +27,15 @@ public class WebUtil {
 		
 	}
 	
-	public static void removeAttribute(HttpServletRequest request, String attribute) {
+	public static void setBeforePage(HttpServletRequest request, String currPage) {
 		HttpSession session = request.getSession();
-		session.removeAttribute(attribute);
+		session.setAttribute("beforePage", currPage);
 	}
+	
+	public static String getBeforePage(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		
+		return (String) session.getAttribute("beforePage");
+	}
+	
 }

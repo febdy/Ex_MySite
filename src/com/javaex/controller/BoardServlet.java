@@ -25,6 +25,8 @@ public class BoardServlet extends HttpServlet {
 		String url;
 		
 		if("list".equals(actionName)) {
+			WebUtil.setBeforePage(request, "board?a=list");
+			
 			BoardDao boardDao = new BoardDao();
 			List<BoardVo> bList = boardDao.getList();
 			
@@ -33,28 +35,42 @@ public class BoardServlet extends HttpServlet {
 			WebUtil.forward(request, response, url);
 
 		} else if("writeform".equals(actionName)) {
-			url = "/WEB-INF/views/board/write.jsp";
-			WebUtil.forward(request, response, url);
-
+			HttpSession session = request.getSession();
+			UserVo authUser = (UserVo) session.getAttribute("authUser");
+			
+			if(authUser == null) {
+				url = "board?a=list";
+				WebUtil.redirect(request, response, url);
+			} else {
+				url = "/WEB-INF/views/board/write.jsp";
+				WebUtil.forward(request, response, url);
+			}
+			
 		} else if("write".equals(actionName)) {
 			HttpSession session = request.getSession();
 			UserVo authUser = (UserVo) session.getAttribute("authUser");
 			
-			String title = request.getParameter("title");
-			String content = request.getParameter("content");
-			
-			BoardVo boardVo = new BoardVo();
-			boardVo.setTitle(title);
-			boardVo.setContent(content);
-			boardVo.setHit(0);
-			boardVo.setUserNo(authUser.getNo());
-			boardVo.setName(authUser.getName());
-			
-			BoardDao boardDao = new BoardDao();
-			boardDao.write(boardVo);
-			
-			url = "board?a=list";
-			WebUtil.redirect(request, response, url);
+			if(authUser == null) {
+				url = "board?a=list";
+				WebUtil.redirect(request, response, url);
+			}
+			else {
+				String title = request.getParameter("title");
+				String content = request.getParameter("content");
+				
+				BoardVo boardVo = new BoardVo();
+				boardVo.setTitle(title);
+				boardVo.setContent(content);
+				boardVo.setHit(0);
+				boardVo.setUserNo(authUser.getNo());
+				boardVo.setName(authUser.getName());
+				
+				BoardDao boardDao = new BoardDao();
+				boardDao.write(boardVo);
+				
+				url = "board?a=list";
+				WebUtil.redirect(request, response, url);
+			}
 			
 		} else if("view".equals(actionName)) {
 			int no = Integer.valueOf(request.getParameter("no"));
@@ -62,6 +78,8 @@ public class BoardServlet extends HttpServlet {
 			BoardVo boardVo = boardDao.getArticle(no);
 			boardDao.updateHit(no);
 			
+			WebUtil.setBeforePage(request, "board?a=view&no=" + no);
+
 			request.setAttribute("boardVo", boardVo);
 			url = "/WEB-INF/views/board/view.jsp";
 			WebUtil.forward(request, response, url);

@@ -16,6 +16,8 @@ public class Controller extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		WebUtil.setBeforePage(request, "main");
+
 		String url = "/WEB-INF/views/main/index.jsp";
 		WebUtil.forward(request, response, url);
 		

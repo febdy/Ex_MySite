@@ -24,9 +24,7 @@ public class UserServlet extends HttpServlet {
 		
 		actionName = request.getParameter("a");
 		
-		if("joinform".equals(actionName)) {
-			WebUtil.removeAttribute(request, "beforePage");
-			
+		if("joinform".equals(actionName)) {			
 			url = "/WEB-INF/views/user/joinform.jsp";
 			WebUtil.forward(request, response, url);
 			
@@ -49,8 +47,6 @@ public class UserServlet extends HttpServlet {
 			WebUtil.forward(request, response, url);
 			
 		} else if("joinsuccess".equals(actionName)) {
-			WebUtil.removeAttribute(request, "beforePage");
-			
 			url = "/WEB-INF/views/user/joinsuccess.jsp";
 			WebUtil.forward(request, response, url);
 			
@@ -75,12 +71,7 @@ public class UserServlet extends HttpServlet {
 				session = request.getSession(true);
 				session.setAttribute("authUser", userVo);
 				
-				String beforePage = (String)session.getAttribute("beforePage");
-
-				if(beforePage == null)
-					url = "/mysite/main";
-				else
-					url = beforePage;
+				url = WebUtil.getBeforePage(request);
 					
 				WebUtil.redirect(request, response, url);
 
@@ -88,20 +79,13 @@ public class UserServlet extends HttpServlet {
 			
 		} else if("logout".equals(actionName)) {
 			session = request.getSession();
-			String beforePage = (String)session.getAttribute("beforePage");
+			url = WebUtil.getBeforePage(request);
 			session.removeAttribute("authUser");
 			session.invalidate(); // 초기화
 			
-			if(beforePage == null)
-				url = "/mysite/main";
-			else
-				url = beforePage;
-
 			WebUtil.redirect(request, response, url);
 			
-		} else if("modifyform".equals(actionName)) {
-			WebUtil.removeAttribute(request, "beforePage");
-			
+		} else if("modifyform".equals(actionName)) {			
 			session = request.getSession();
 			UserVo authUser = (UserVo)session.getAttribute("authUser");
 			
@@ -120,14 +104,11 @@ public class UserServlet extends HttpServlet {
 			}
 			
 		} else if("modify".equals(actionName)) {
-			WebUtil.removeAttribute(request, "beforePage");
-			
 			session = request.getSession(); 
 			UserVo authUser = (UserVo)session.getAttribute("authUser");
 			
 			if(authUser == null) {
-				WebUtil.redirect(request, response, "user?a=loginform");
-				
+				WebUtil.redirect(request, response, "user?a=loginform");			
 			} else {	
 				String name = request.getParameter("name");
 				String password = request.getParameter("password");
@@ -145,7 +126,7 @@ public class UserServlet extends HttpServlet {
 				
 				authUser.setName(name); // authUser 이름 갱신
 
-				url = "main";
+				url = WebUtil.getBeforePage(request);
 				WebUtil.redirect(request, response, url);
 			}
 		

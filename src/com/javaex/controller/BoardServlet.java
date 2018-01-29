@@ -36,9 +36,11 @@ public class BoardServlet extends HttpServlet {
 
 			BoardDao boardDao = new BoardDao();
 			List<BoardVo> bList = boardDao.getList(page);
-			
+			int maxPageNum = boardDao.getMaxPageNum();
+
 			request.setAttribute("bList", bList);
 			request.setAttribute("page", page);
+			request.setAttribute("maxPageNum", maxPageNum);
 			url = "/WEB-INF/views/board/list.jsp";
 			WebUtil.forward(request, response, url);
 

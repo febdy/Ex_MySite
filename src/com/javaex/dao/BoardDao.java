@@ -15,6 +15,7 @@ public class BoardDao {
 	private Connection conn = null;
 	private PreparedStatement pstmt = null;
 	private ResultSet rs = null;
+	private final int numByPage = 5;
 
 	public void write(BoardVo boardVo) {
 		try {
@@ -100,7 +101,6 @@ public class BoardDao {
 	public List<BoardVo> getList(int page) {
 		List<BoardVo> bList = new ArrayList<>();
 		BoardVo boardVo;
-		final int numByPage = 5;
 
 		try {
 			// 1. JDBC 드라이버 (Oracle) 로딩
@@ -161,6 +161,55 @@ public class BoardDao {
 		}
 
 		return bList;
+	}
+	
+	public int getMaxPageNum() {
+		int maxPageNum = 0;
+		
+		try {
+			// 1. JDBC 드라이버 (Oracle) 로딩
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+
+			// 2. Connection 얻어오기
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			conn = DriverManager.getConnection(url, "webdb", "webdb");
+
+			// 3. SQL문 준비 / 바인딩 / 실행
+			String query = "SELECT count(no) cnt " + 
+						   "FROM board";
+
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				maxPageNum = rs.getInt("cnt");
+			}
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("error: 드라이버 로딩 실패 - " + e);
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			// 5. 자원정리
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			}
+		}
+		
+		if(maxPageNum % numByPage == 0)
+			return maxPageNum/numByPage;
+		else
+			return maxPageNum/numByPage + 1;
 	}
 
 	public BoardVo getArticle(int no) {

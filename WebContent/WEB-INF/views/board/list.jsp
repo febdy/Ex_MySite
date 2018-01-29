@@ -56,7 +56,7 @@
 							<li>◀</li>
 						</c:if>
 						
-						<c:forEach var="i" begin="1" end="5" step="1">
+						<c:forEach var="i" begin="1" end="${maxPageNum}" step="1">
 							<c:if test="${page == i}">
 								<li class="selected"><a href="board?a=list&page=${i}">${i}</a></li>
 							</c:if>
@@ -65,10 +65,10 @@
 							</c:if>
 						</c:forEach>
 
-						<c:if test="${page < 5}">
+						<c:if test="${page < maxPageNum}">
 							<li><a href="board?a=list&page=${page+1}">▶</a></li>
 						</c:if>
-						<c:if test="${page >= 5 }">
+						<c:if test="${page >= maxPageNum }">
 							<li>▶</li>
 						</c:if>
 					</ul>

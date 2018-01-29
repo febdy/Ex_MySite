@@ -57,6 +57,7 @@ public class BoardServlet extends HttpServlet {
 			else {
 				String title = request.getParameter("title");
 				String content = request.getParameter("content");
+				content = content.replace("\r\n", "<br>");
 				
 				BoardVo boardVo = new BoardVo();
 				boardVo.setTitle(title);
@@ -112,6 +113,7 @@ public class BoardServlet extends HttpServlet {
 			if((authUser != null) && (authUser.getNo() == boardVo.getUserNo())) {
 				String newTitle = request.getParameter("title");
 				String newContent = request.getParameter("content");
+				newContent = newContent.replace("\r\n", "<br>");
 				
 				boardVo.setTitle(newTitle);
 				boardVo.setContent(newContent);

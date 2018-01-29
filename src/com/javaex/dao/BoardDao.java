@@ -209,6 +209,67 @@ public class BoardDao {
 		return boardVo;
 	}
 	
+	public List<BoardVo> getSearchList(String kwd) {
+		List<BoardVo> bList = new ArrayList<>();
+		BoardVo boardVo;
+
+		try {
+			// 1. JDBC 드라이버 (Oracle) 로딩
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+
+			// 2. Connection 얻어오기
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			conn = DriverManager.getConnection(url, "webdb", "webdb");
+
+			// 3. SQL문 준비 / 바인딩 / 실행
+			String query = "SELECT board.no no, title, content, hit, to_char(reg_date, 'YY-MM-DD HH:MM') reg_date, user_no, name "
+						 + "FROM board, users "
+						 + "WHERE board.user_no = users.no "
+						 + "AND title LIKE ?"
+						 + "ORDER BY board.no DESC";
+
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, "%"+kwd+"%");
+			pstmt.executeQuery();
+			rs = pstmt.getResultSet();
+
+			while (rs.next()) {
+				boardVo = new BoardVo();
+				boardVo.setNo(rs.getInt("no"));
+				boardVo.setTitle(rs.getString("title"));
+				boardVo.setContent(rs.getString("content"));
+				boardVo.setHit(rs.getInt("hit"));
+				boardVo.setDate(rs.getString("reg_date"));
+				boardVo.setUserNo(rs.getInt("user_no"));
+				boardVo.setName(rs.getString("name"));
+				
+				bList.add(boardVo);
+			}
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("error: 드라이버 로딩 실패 - " + e);
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			// 5. 자원정리
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			}
+		}
+
+		return bList;
+	}
+	
 	public void modify(BoardVo boardVo) {
 		try {
 			// 1. JDBC 드라이버 (Oracle) 로딩

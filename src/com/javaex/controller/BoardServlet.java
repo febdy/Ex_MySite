@@ -140,6 +140,17 @@ public class BoardServlet extends HttpServlet {
 			url = "board?a=list";
 			WebUtil.redirect(request, response, url);
 			
+		} else if("search".equals(actionName)) {
+			String kwd = request.getParameter("kwd");
+			WebUtil.setBeforePage(request, "board?a=search&kwd=" + kwd);
+			
+			BoardDao boardDao = new BoardDao();
+			List<BoardVo> bList = boardDao.getSearchList(kwd);
+			
+			request.setAttribute("bList", bList);
+			url = "/WEB-INF/views/board/list.jsp";
+			WebUtil.forward(request, response, url);
+			
 		}
 
 	}

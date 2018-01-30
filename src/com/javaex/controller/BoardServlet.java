@@ -41,6 +41,7 @@ public class BoardServlet extends HttpServlet {
 			request.setAttribute("bList", bList);
 			request.setAttribute("page", page);
 			request.setAttribute("maxPageNum", maxPageNum);
+			request.setAttribute("where", "list");
 			url = "/WEB-INF/views/board/list.jsp";
 			WebUtil.forward(request, response, url);
 
@@ -152,15 +153,27 @@ public class BoardServlet extends HttpServlet {
 			
 		} else if("search".equals(actionName)) {
 			String kwd = request.getParameter("kwd");
-			WebUtil.setBeforePage(request, "board?a=search&kwd=" + kwd);
+			String paramPage = request.getParameter("page");
+			int page = 1;
+
+			if(paramPage != null) {
+				 page = Integer.parseInt(request.getParameter("page"));
+			}
 			
+			WebUtil.setBeforePage(request, "board?a=search&kwd=" + kwd + "&page=" + page);
+					
 			BoardDao boardDao = new BoardDao();
-			List<BoardVo> bList = boardDao.getSearchList(kwd);
-			
+			List<BoardVo> bList = boardDao.getSearchList(kwd, page);
+			int maxPageNum = boardDao.getMaxSearchPageNum(kwd);
+
 			request.setAttribute("bList", bList);
+			request.setAttribute("page", page);
+			request.setAttribute("maxPageNum", maxPageNum);
+			request.setAttribute("kwd", kwd);
+			request.setAttribute("where", "search");
 			url = "/WEB-INF/views/board/list.jsp";
 			WebUtil.forward(request, response, url);
-			
+				
 		}
 
 	}

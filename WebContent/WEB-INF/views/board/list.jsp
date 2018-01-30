@@ -50,23 +50,43 @@
 				<div class="pager">
 					<ul>
 						<c:if test="${page > 1}">
-							<li><a href="board?a=list&page=${page-1}">◀</a></li>
+							<c:if test="${where == 'list'}">
+								<li><a href="board?a=${where}&page=${page-1}">◀</a></li>
+							</c:if>
+							<c:if test="${where == 'search'}">
+								<li><a href="board?a=${where}&kwd=${kwd}&page=${page-1}">◀</a></li>
+							</c:if>
 						</c:if>
 						<c:if test="${page <= 1 }">
 							<li>◀</li>
 						</c:if>
 						
 						<c:forEach var="i" begin="1" end="${maxPageNum}" step="1">
-							<c:if test="${page == i}">
-								<li class="selected"><a href="board?a=list&page=${i}">${i}</a></li>
+							<c:if test="${page == i}"> <!-- 현재 페이지 선택(밑줄) -->								
+								<c:if test="${where == 'list'}">
+									<li class="selected"><a href="board?a=${where}&page=${i}">${i}</a></li>
+								</c:if>
+								<c:if test="${where == 'search'}">
+									<li class="selected"><a href="board?a=${where}&kwd=${kwd}&page=${i}">${i}</a></li>
+								</c:if>
 							</c:if>
 							<c:if test="${page != i}">
-								<li><a href="board?a=list&page=${i}">${i}</a></li>
+								<c:if test="${where == 'list'}">
+									<li><a href="board?a=${where}&page=${i}">${i}</a></li>
+								</c:if>
+								<c:if test="${where == 'search'}">
+									<li><a href="board?a=${where}&kwd=${kwd}&page=${i}">${i}</a></li>
+								</c:if>
 							</c:if>
 						</c:forEach>
 
 						<c:if test="${page < maxPageNum}">
-							<li><a href="board?a=list&page=${page+1}">▶</a></li>
+							<c:if test="${where == 'list'}">
+								<li><a href="board?a=${where}&page=${page+1}">▶</a></li>
+							</c:if>
+							<c:if test="${where == 'search'}">
+								<li><a href="board?a=${where}&kwd=${kwd}&page=${page+1}">▶</a></li>
+							</c:if>
 						</c:if>
 						<c:if test="${page >= maxPageNum }">
 							<li>▶</li>

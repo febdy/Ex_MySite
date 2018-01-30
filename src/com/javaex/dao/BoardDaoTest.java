@@ -15,11 +15,11 @@ public class BoardDaoTest {
 		vo.setUserNo(1);
 	//	dao.insert(vo);		
 		
-		List<BoardVo> bList = dao.getList();
+	//	List<BoardVo> bList = dao.getList();
 		
-		for(BoardVo bVo : bList) {
-			System.out.println(bVo.toString());
-		}
+	//	for(BoardVo bVo : bList) {
+	//		System.out.println(bVo.toString());
+	//	}
 		
 	}
 }

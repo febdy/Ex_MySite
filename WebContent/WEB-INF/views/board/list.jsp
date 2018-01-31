@@ -51,7 +51,7 @@
 					<c:if test="${where == 'list'}">				
 						<ul>
 							<c:if test="${page > 1}">
-								<li><a href="board?a=list&page=${page-1}">◀</a></li>
+								<li><a href="board?a=list&page=1">◀</a></li>
 							</c:if>
 							<c:if test="${page <= 1}">
 								<li>◀</li>
@@ -67,7 +67,7 @@
 							</c:forEach>
 	
 							<c:if test="${page < maxPageNum}">
-								<li><a href="board?a=list&page=${page+1}">▶</a></li>
+								<li><a href="board?a=list&page=${maxPageNum}">▶</a></li>
 							</c:if>
 							<c:if test="${page >= maxPageNum}">
 								<li>▶</li>
@@ -78,7 +78,7 @@
 					<c:if test="${where == 'search'}">				
 						<ul>
 							<c:if test="${page > 1}">
-								<li><a href="board?a=search&kwd=${kwd}&page=${page-1}">◀</a></li>
+								<li><a href="board?a=search&kwd=${kwd}&page=1">◀</a></li>
 							</c:if>
 							<c:if test="${page <= 1}">
 								<li>◀</li>
@@ -94,7 +94,7 @@
 							</c:forEach>
 	
 							<c:if test="${page < maxPageNum}">
-								<li><a href="board?a=search&kwd=${kwd}&page=${page+1}">▶</a></li>
+								<li><a href="board?a=search&kwd=${kwd}&page=${maxPageNum}">▶</a></li>
 							</c:if>
 							<c:if test="${page >= maxPageNum}">
 								<li>▶</li>
